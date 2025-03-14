@@ -1,4 +1,4 @@
-# SQL-ServerAPI
+# [SQL-ServerAPI](https://sqlserverapi.onrender.com/)
 
 SQL-ServerAPI is a Node.js project that demonstrates basic CRUD operations using MySQL, Express, and EJS. The project is styled with Tailwind CSS and uses additional libraries like @faker-js/faker for generating dummy data and bcrypt for secure password hashing.
 
