@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Form - Shadow Speak</title>
+  <link rel="stylesheet" href="/tailwind.css">
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-6">
+  <!-- Container Card -->
+  <div class="max-w-md w-full bg-white p-6 rounded shadow-lg">
+    <h2 id="title" class="text-2xl font-bold text-center mb-6">
+      Edit Username for ID: <%= id %>
+    </h2>
+    <form method="post" action="/users/<%= id %>?_method=PATCH" class="space-y-5">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">Username</h3>
+        <textarea name="username" cols="30" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"><%= users.username %></textarea>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">Email</h3>
+        <textarea name="email" cols="30" class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"><%= users.email %></textarea>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">Confirm Password</h3>
+        <input type="password" name="password" required class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500">
+      </div>
+      <button type="submit" class="w-full bg-orange-500 text-white py-2 px-4 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Submit
+      </button>
+    </form>
+  </div>
+</body>
+</html>

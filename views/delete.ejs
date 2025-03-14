@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Page</title>
+  <link rel="stylesheet" href="/tailwind.css">
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
+  <div class="max-w-md w-full bg-white p-6 rounded shadow-lg">
+    <h2 id="title" class="text-2xl font-bold text-center mb-6">
+      Delete data for username: <%= users.username %>
+    </h2>
+    <form action="/users/<%= id %>?_method=DELETE" method="post" class="space-y-5">
+      <div>
+        <label for="email" class="block text-gray-700 font-semibold mb-1">Verify Email</label>
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="<%= users.email %>" 
+          class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500" />
+      </div>
+      <div>
+        <label for="password" class="block text-gray-700 font-semibold mb-1">Confirm Password</label>
+        <input 
+          type="password" 
+          name="password" 
+          class="w-full border border-gray-300 p-2 rounded focus:outline-none focus:ring-2 focus:ring-orange-500" />
+      </div>
+      <button type="submit" class="w-full bg-orange-500 text-white py-2 px-4 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Submit
+      </button>
+    </form>
+  </div>
+</body>
+</html>

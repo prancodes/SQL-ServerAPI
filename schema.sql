@@ -1,0 +1,12 @@
+-- CREATE TABLE User (
+--     id INT PRIMARY KEY,
+--     username VARCHAR(50) NOT NULL,
+--     email VARCHAR(50) NOT NULL,
+--     password INT NOT NULL
+-- );
+
+-- ALTER TABLE User MODIFY id VARCHAR(60);
+-- ALTER TABLE User MODIFY password VARCHAR(60);
+
+-- ALTER TABLE User ADD COLUMN Timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+

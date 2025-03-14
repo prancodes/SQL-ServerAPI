@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users</title>
+  <link rel="stylesheet" href="/tailwind.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 p-6">
+  <!-- Header -->
+  <h1 class="bg-orange-500 text-white py-4 mb-6 text-center rounded text-2xl font-bold shadow-md">
+    We have reached <%= count %> Users &#127881;
+  </h1>
+
+  <!-- Action Forms Container -->
+  <div id="userTitle" class="bg-white border border-gray-300 p-4 my-6 rounded shadow flex flex-col sm:flex-row justify-around items-center">
+    <!-- Join Form -->
+    <form method="get" action="/users/add" class="flex flex-col items-center mb-4 sm:mb-0">
+      <button type="submit" class="bg-orange-500 text-white py-2 px-6 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Join
+      </button>
+    </form>
+
+    <!-- Insert 5 Rows Form -->
+    <form method="get" action="/users/insert-5/admin" class="flex flex-col items-center mb-4 sm:mb-0">
+      <button type="submit" class="bg-orange-500 text-white py-2 px-6 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Insert 5 Rows
+      </button>
+    </form>
+
+    <!-- Delete All Form -->
+    <form method="get" action="/users/delete-all/admin" class="flex flex-col items-center">
+      <button type="submit" class="bg-orange-500 text-white py-2 px-6 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Delete All
+      </button>
+    </form>
+  </div>
+
+  <!-- Table Display -->
+  <table class="w-full border-collapse mt-6 bg-white shadow">
+    <thead class="bg-orange-400 text-white font-bold">
+      <tr>
+        <th class="border border-gray-300 px-4 py-3 text-left">Sr No.</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Id</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Name</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Email</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Timestamp</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Edit</th>
+        <th class="border border-gray-300 px-4 py-3 text-left">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (let i = 0; i < result.length; i++) { %>
+        <tr class="hover:bg-gray-100">
+          <td class="border border-gray-300 px-4 py-3 text-left"><%= i + 1 %></td>
+          <td class="border border-gray-300 px-4 py-3 text-left"><%= result[i].id %></td>
+          <td class="border border-gray-300 px-4 py-3 text-left"><%= result[i].username %></td>
+          <td class="border border-gray-300 px-4 py-3 text-left"><%= result[i].email %></td>
+          <td class="border border-gray-300 px-4 py-3 text-left"><%= result[i].Timestamp %></td>
+          <td class="border border-gray-300 px-4 py-3 text-left">
+            <form action="/users/<%= result[i].id %>/edit" method="get">
+              <button type="submit" class="bg-orange-500 text-white py-1 px-3 rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+                Edit
+              </button>
+            </form>
+          </td>
+          <td class="border border-gray-300 px-4 py-3 text-left">
+            <form action="/users/<%= result[i].id %>/delete" method="get">
+              <button type="submit" class="bg-orange-500 text-white py-1 px-3 rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+                Delete
+              </button>
+            </form>
+          </td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>

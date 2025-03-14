@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SQL-ServerAPI - CRUD Operations</title>
+  <link rel="stylesheet" href="/tailwind.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 p-6">
+  <!-- Header Section -->
+  <header class="mb-8">
+    <h1 class="bg-orange-500 text-white py-4 px-6 rounded shadow-lg text-3xl font-extrabold text-center">
+      SQL-ServerAPI
+    </h1>
+    <p class="mt-4 text-center text-xl font-bold text-gray-600">
+      Demonstrating CRUD operations using Node, Express, MySQL, and EJS.
+    </p>
+    <p class="mt-2 text-center text-gray-600">
+      Built with dependencies like : <span class="font-semibold">@faker-js/faker, method-override, mysql2, tailwindcss, uuid and more.</span>
+    </p>
+    <p class="mt-4 text-center">
+      <a href="https://github.com/yourusername/SQL-ServerAPI" target="_blank" class="text-orange-500 underline font-bold">
+        View this project on GitHub
+      </a>
+    </p>
+  </header>
+
+  <!-- Action Section -->
+  <section id="userActions" class="bg-white border border-gray-300 p-6 my-6 rounded shadow flex flex-col sm:flex-row justify-around items-center space-y-4 sm:space-y-0">
+    <form method="get" action="/users/add" class="flex flex-col items-center">
+      <button type="submit" class="bg-orange-500 text-white py-2 px-8 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        Join Our Community
+      </button>
+    </form>
+    <form method="get" action="/users" class="flex flex-col items-center">
+      <button type="submit" class="bg-orange-500 text-white py-2 px-8 font-bold rounded transition-colors duration-300 hover:bg-orange-600 shadow">
+        View All Users
+      </button>
+    </form>
+  </section>
+
+  <!-- Footer Section -->
+  <footer class="mt-8 text-center text-gray-600">
+    <p>&copy; 2025 SQL-ServerAPI Repository. All rights reserved.</p>
+  </footer>
+</body>
+</html>
