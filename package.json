@@ -4,6 +4,10 @@
   "description": "Demonstrating CRUD operations using Node, Express, MySQL, and EJS.",
   "main": "index.js",
   "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./public/style.css -o ./public/tailwind.css --minify",
+    "watch:css": "npx @tailwindcss/cli -i ./public/style.css -o ./public/tailwind.css --watch",
+    "start": "node index.js",
+    "deploy": "npm run build:css && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
