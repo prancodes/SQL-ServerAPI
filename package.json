@@ -1,35 +1,35 @@
 {
-  "name": "sql-serverapi",
+  "name": "sqlserverapi",
   "version": "1.0.0",
-  "description": "",
-  "homepage": "https://github.com/prancodes/SQLserverapi#readme",
-  "bugs": {
-    "url": "https://github.com/prancodes/SQLserverapi/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/prancodes/SQLserverapi.git"
-  },
-  "license": "ISC",
-  "author": "Pranjal",
-  "type": "commonjs",
+  "description": "Demonstrating CRUD operations using Node, Express, MySQL, and EJS.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prancodes/SQL-ServerAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/prancodes/SQL-ServerAPI/issues"
+  },
+  "homepage": "https://github.com/prancodes/SQL-ServerAPI#readme",
   "dependencies": {
-    "@faker-js/faker": "^9.1.0",
+    "@faker-js/faker": "^9.6.0",
     "@tailwindcss/cli": "^4.0.14",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "method-override": "^3.0.0",
-    "mysql2": "^3.11.3",
+    "mysql2": "^3.13.0",
     "tailwindcss": "^4.0.14",
-    "uuid": "^11.0.2"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
-  },
-  "keywords": []
+  }
 }

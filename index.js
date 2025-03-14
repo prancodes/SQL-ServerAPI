@@ -26,7 +26,7 @@ connection.connect(err => {
     console.error("Database connection failed:", err);
     process.exit(1);
   }
-  console.log("Connected to MySQL Database.");
+  console.log("Connected to MySQL Database");
 });
 
 // Home page: display number of users
