@@ -1,7 +1,8 @@
-const { faker } = require('@faker-js/faker');
-const mysql = require('mysql2');
+const { faker } = require("@faker-js/faker");
+const mysql = require("mysql2");
+const bcrypt = require("bcrypt");
 const express = require("express");
-require('dotenv').config();
+require("dotenv").config();
 const app = express();
 const port = 3000;
 const path = require("path");
@@ -10,7 +11,7 @@ const methodOverride = require("method-override");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -21,7 +22,7 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-connection.connect(err => {
+connection.connect((err) => {
   if (err) {
     console.error("Database connection failed:", err);
     process.exit(1);
@@ -66,16 +67,21 @@ app.get("/users/:id/edit", (req, res) => {
 });
 
 // Update user data
-app.patch("/users/:id", (req, res) => {
+app.patch("/users/:id", async (req, res) => {
   const { id } = req.params;
   const { username: newUser, email: newEmail, password: formPass } = req.body;
   const qSelect = `SELECT * FROM User WHERE id='${id}'`;
-  connection.query(qSelect, (err, result) => {
+
+  connection.query(qSelect, async (err, result) => {
     if (err) return res.status(500).send("Error occurred");
     const user = result[0];
-    if (formPass !== user.password) {
+
+    // Compare provided password with stored hashed password
+    const match = await bcrypt.compare(formPass, user.password);
+    if (!match) {
       return res.send("Incorrect Password, Please try again!");
     }
+
     const qUpdate = `UPDATE User SET username='${newUser}', email='${newEmail}', Timestamp = NOW() WHERE id='${id}'`;
     connection.query(qUpdate, (err) => {
       if (err) return res.status(500).send("Error occurred");
@@ -90,15 +96,25 @@ app.get("/users/add", (req, res) => {
 });
 
 // Add new user
-app.post("/users", (req, res) => {
+app.post("/users", async (req, res) => {
   const getRandomId = () => faker.string.uuid();
   const id = getRandomId();
   const { username, email, password } = req.body;
-  const qInsert = `INSERT INTO User VALUES (?,?,?,?, NOW())`;
-  connection.query(qInsert, [id, username, email, password], (err) => {
-    if (err) return res.status(500).send("Error occurred");
-    res.redirect("/users");
-  });
+
+  try {
+    // Hash the password before storing it
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const qInsert = `INSERT INTO User VALUES (?,?,?,?, NOW())`;
+    connection.query(qInsert, [id, username, email, hashedPassword], (err) => {
+      if (err) return res.status(500).send("Error occurred");
+      res.redirect("/users");
+    });
+  } catch (err) {
+    console.error("Error hashing password:", err);
+    return res.status(500).send("Error occurred");
+  }
 });
 
 // Delete confirmation page
@@ -113,18 +129,20 @@ app.get("/users/:id/delete", (req, res) => {
 });
 
 // Delete user
-app.delete("/users/:id", (req, res) => {
+app.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
   const { email: formEmail, password: formPass } = req.body;
   const qSelect = `SELECT * FROM User WHERE id='${id}'`;
-  connection.query(qSelect, (err, result) => {
+
+  connection.query(qSelect, async (err, result) => {
     if (err) return res.status(500).send("Error occurred");
     const user = result[0];
-    if (formEmail !== user.email && formPass !== user.password) {
-      return res.send("Incorrect email & password, Please try again!");
-    } else if (formEmail !== user.email) {
+    if (formEmail !== user.email) {
       return res.send("Incorrect Email, Please try again!");
-    } else if (formPass !== user.password) {
+    }
+    // Compare the provided password with the stored hashed password
+    const match = await bcrypt.compare(formPass, user.password);
+    if (!match) {
       return res.send("Incorrect Password, Please try again!");
     }
     const qDelete = `DELETE FROM User WHERE id='${id}'`;
@@ -144,7 +162,7 @@ function verifyAdmin(req, res, next) {
     return res.status(500).send("Admin credentials are not configured.");
   }
   const { username, password } = req.body;
-  
+
   if (username !== adminName && password !== adminPass) {
     return res.send("Incorrect username & password, Please try again!");
   } else if (username !== adminName) {
@@ -152,21 +170,20 @@ function verifyAdmin(req, res, next) {
   } else if (password !== adminPass) {
     return res.send("Incorrect Password, Please try again!");
   }
-  
+
   next();
 }
-
 
 // Admin page for deletion or insertion actions
 app.get("/users/:param/admin", (req, res) => {
   const { param } = req.params;
-  const method = param === 'delete-all' ? "DELETE" : "POST";
+  const method = param === "delete-all" ? "DELETE" : "POST";
   res.render("admin", { method, param });
 });
 
 // Delete all users (admin)
 app.delete("/users/delete-all/admin", verifyAdmin, (req, res) => {
-  const q = 'TRUNCATE TABLE User';
+  const q = "TRUNCATE TABLE User";
   connection.query(q, (err) => {
     if (err) return res.status(500).send("Error occurred");
     res.redirect("/users");
@@ -175,12 +192,15 @@ app.delete("/users/delete-all/admin", verifyAdmin, (req, res) => {
 
 // Insert 5 random users (admin)
 app.post("/users/insert-5/admin", verifyAdmin, (req, res) => {
-  const getRandomUser = () => [
-    faker.string.uuid(),
-    faker.internet.username(),
-    faker.internet.email(),
-    faker.internet.password()
-  ];
+  const getRandomUser = () => {
+    const id = faker.string.uuid();
+    const username = faker.internet.username();
+    const email = faker.internet.email();
+    // Synchronously hash the generated password
+    const plainPassword = faker.internet.password();
+    const hashedPassword = bcrypt.hashSync(plainPassword, 10);
+    return [id, username, email, hashedPassword];
+  };
   const q = `INSERT INTO User (id, username, email, password) VALUES ?`;
   const users = [];
   for (let i = 0; i < 5; i++) {
